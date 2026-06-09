@@ -4,15 +4,10 @@
 
 @section('content')
     <h1>Our Products</h1>
-    @if (session('error'))
-        <p style="color:red">{{ session('error') }}</p>
-    @endif
-    @if (auth()->user()?->isAdmin())
-        <a href="{{ route('products.create') }}">Add Product</a>
-        <br>
-        <a href="{{ route('admin.orders') }}">All Orders</a>
-    @endif
+
     <form method="GET" action="{{ route('products.index') }}">
+    <input type="text" name="search" value="{{ $search }}" placeholder="Search products...">
+
     <select name="category" onchange="this.form.submit()">
         <option value="">All categories</option>
         @foreach ($categories as $category)
@@ -21,8 +16,10 @@
             </option>
         @endforeach
     </select>
-    <button type="submit">Filter</button>
+
+    <button type="submit">Search</button>
 </form>
+
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -62,4 +59,23 @@
             @endforelse
         </tbody>
     </table>
+
+    @if ($products->hasPages())
+        <div style="margin-top: 1rem;">
+            @if ($products->onFirstPage())
+                <span>« Previous</span>
+            @else
+                <a href="{{ $products->previousPageUrl() }}">« Previous</a>
+            @endif
+
+            <span>&nbsp; Page {{ $products->currentPage() }} of {{ $products->lastPage() }} &nbsp;</span>
+
+            @if ($products->hasMorePages())
+                <a href="{{ $products->nextPageUrl() }}">Next »</a>
+            @else
+                <span>Next »</span>
+            @endif
+        </div>
+    @endif
 @endsection
+

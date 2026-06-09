@@ -17,12 +17,20 @@ class ProductController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        $products = $query->get();
+        if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('description', 'like', '%' . $request->search . '%');
+        });
+    }
+
+        $products = $query->paginate(2)->withQueryString();
 
         return view('products.index', [
             'products' => $products,
             'categories' => $categories,
             'selectedCategory' => $request->category,
+            'search' => $request->search,
         ]);
     }
     public function show($id)
