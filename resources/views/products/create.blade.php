@@ -13,7 +13,7 @@
         </ul>
     @endif
 
-    <form action="{{ route('products.store') }}" method="POST">
+    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <p>Name<br><input type="text" name="name" value="{{ old('name') }}"></p>
@@ -31,7 +31,7 @@
         <p>Description<br><textarea name="description">{{ old('description') }}</textarea></p>
         <p>Price<br><input type="number" step="0.01" name="price" value="{{ old('price') }}"></p>
         <p>Stock<br><input type="number" name="stock" value="{{ old('stock') }}"></p>
-
+        <p>Image<br><input type="file" name="image"></p>
         <button type="submit">Save</button>
     </form>
 @endsection

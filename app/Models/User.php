@@ -29,4 +29,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-}
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    }

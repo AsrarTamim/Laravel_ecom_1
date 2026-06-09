@@ -15,7 +15,24 @@
 <body>
     <header>
         <a href="{{ route('products.index') }}">My Shop</a>
+
     </header>
+            @if (auth()->user()?->isAdmin())
+    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+    @endif
+    <br>
+    @guest
+        <a href="{{ route('login') }}">Login</a> <br>
+        <a href="{{ route('register') }}">Register</a> <br>
+    @else
+        <span>Hi, {{ auth()->user()->name }}</span>
+        <form action="{{ route('logout') }}" method="post" style="display:inline">
+            @csrf
+            <button type="submit">Logout</button> <br>
+        </form>
+        <a href="{{ route('orders.index') }}">My Orders</a>
+    @endguest
+    <a href="{{ route('cart.index') }}">Cart ({{ array_sum(session('cart', [])) }})</a>
 
     @yield('content')
 </body>
